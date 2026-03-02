@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BulkEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,4 +15,8 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    // Bulk Email Routes
+    Route::get('/bulk-email', [BulkEmailController::class, 'index'])->name('bulk-email.index');
+    Route::post('/bulk-email/send', [BulkEmailController::class, 'send'])->name('bulk-email.send');
 });
