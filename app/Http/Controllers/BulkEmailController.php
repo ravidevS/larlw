@@ -26,8 +26,8 @@ class BulkEmailController extends Controller
 
         if ($request->hasFile('attachments')) {
             foreach ($request->file('attachments') as $file) {
-                // Save relative path
-                $attachmentPaths[] = $file->store('temp-attachments');
+                // Save relative path on a fixed disk so queue workers can resolve attachments consistently.
+                $attachmentPaths[] = $file->store('temp-attachments', 'local');
             }
         }
 

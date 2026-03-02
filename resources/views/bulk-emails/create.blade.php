@@ -34,6 +34,11 @@
                         <input id="attachments" name="attachments[]" type="file" multiple class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
                         <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Supported formats: PDF, JPG, PNG. Max 10MB per file.</p>
                         <x-input-error for="attachments" class="mt-2" />
+                        @foreach ($errors->get('attachments.*') as $attachmentErrors)
+                            @foreach ($attachmentErrors as $error)
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $error }}</p>
+                            @endforeach
+                        @endforeach
                     </div>
 
                     <div class="flex items-center justify-end">

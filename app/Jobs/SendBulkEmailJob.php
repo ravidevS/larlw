@@ -29,20 +29,20 @@ class SendBulkEmailJob implements ShouldQueue
      */
     public function handle(): void
     {
+        try {
+            $users = User::all();
 
-        $users = User::all();
-
-        foreach ($users as $user) {
-
-            Mail::to($user->email)->send(
-                new BulkAnnouncement($this->subject, $this->message, $this->attachmentPaths)
-            );
-        }
-
-        // Clean up temporary files
-        foreach ($this->attachmentPaths as $path) {
-            if (Storage::disk('local')->exists($path)) {
-                Storage::disk('local')->delete($path);
+            foreach ($users as $user) {
+                Mail::to($user->email)->send(
+                    new BulkAnnouncement($this->subject, $this->message, $this->attachmentPaths)
+                );
+            }
+        } finally {
+            // Always clean up temporary files, even when sending fails partway through.
+            foreach ($this->attachmentPaths as $path) {
+                if (Storage::disk('local')->exists($path)) {
+                    Storage::disk('local')->delete($path);
+                }
             }
         }
     }
